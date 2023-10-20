@@ -8,15 +8,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.springboot.model.Feedback;
+import com.springboot.model.Interview;
 import com.springboot.model.enums.CriteriaEnum;
 
 
 @Repository
 public interface FeedbackRepository extends JpaRepository <Feedback, Integer>{
 	
-	
-//	@Query("SELECT f.id, f.role_and_maturity, rm.name FROM Feedback f JOIN role_and_maturity rm ON f.role_and_maturity = rm.id")
-//	Optional<Feedback> findFeedbackAll(@Param("id") Integer feedbackId);
+	Feedback findByCandidateId(int candidateId);
+
 	
 	@Query("SELECT rm.name AS roleAndMaturity, per.name AS practiceExamResult,"
 			+ " edf.name AS educationalBackgroundFeedback, r.name AS recommendation, c.name AS crCode FROM Feedback f "
@@ -29,5 +29,3 @@ public interface FeedbackRepository extends JpaRepository <Feedback, Integer>{
 	Optional<Integer> findFeedbackAll(@Param("id") Integer feedbackId);
 }
 
-
-//+ "JOIN Interviewee i ON f.intervieweeId = i.id "

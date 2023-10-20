@@ -10,6 +10,6 @@ import com.springboot.model.IndustryExperience;
 
 @Repository
 public interface IndustryExperienceRepository extends JpaRepository <IndustryExperience, Integer>{
-//	IndustryExperience findByIntervieweeId(int parentId);
+	 List<IndustryExperience> findByCandidateId(int candidateId);
 	
 }

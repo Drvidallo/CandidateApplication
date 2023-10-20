@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import com.springboot.model.Interviewee;
+import com.springboot.model.Candidate;
 import com.springboot.model.TechnologyExperience;
-import com.springboot.model.DTO.TechnologyExperienceDTO;
+import com.springboot.model.DTO.ExperienceDTO;
 import com.springboot.model.referenceTable.Technology;
-import com.springboot.repository.IntervieweeRepository;
+import com.springboot.repository.CandidateRepository;
 import com.springboot.repository.TechnologyExperienceRepository;
 import com.springboot.repository.TechnologyRepository;
 
@@ -24,7 +24,7 @@ public class TechnologyExperienceService {
 	TechnologyRepository technologyRepository;
 	
 	@Autowired
-	IntervieweeRepository intervieweeRepository;
+	CandidateRepository candidateRepository;
 	
 	public Iterable<TechnologyExperience> getAllIndustryExperience() {
 		return technologyExperienceRepository.findAll(); 
@@ -36,28 +36,51 @@ public class TechnologyExperienceService {
 	}
 	
 	
-	public List<TechnologyExperienceDTO> getTechnologyExperienceAllValues() {
+	public List<ExperienceDTO> getTechnologyExperienceAllValues() {
         List<TechnologyExperience> technologyExperienceList = technologyExperienceRepository.findAll();
-        List<TechnologyExperienceDTO> technologyExperieneWithValuesList = new ArrayList<>();
+        List<ExperienceDTO> technologyExperienceDTOList = new ArrayList<>();
 
         for (TechnologyExperience technologyExperience : technologyExperienceList) {
         	
             Technology technology = technologyRepository.findById((Integer) technologyExperience.getTechnologyId()).orElse(null);
-            Interviewee interviewee = intervieweeRepository.findById((Integer) technologyExperience.getIntervieweeId()).orElse(null);
+            Candidate candidate = candidateRepository.findById((Integer) technologyExperience.getCandidateId()).orElse(null);
 
-            if (technology != null) {
-            	TechnologyExperienceDTO technologyExperieneWithValues = new TechnologyExperienceDTO();
-            	technologyExperieneWithValues.setId(technologyExperience.getId());
-            	technologyExperieneWithValues.setTechnology(technology.getName());
-            	technologyExperieneWithValues.setIntervieweeFirstName(interviewee.getFirstName());
-            	technologyExperieneWithValues.setIntervieweeLastName(interviewee.getLastName());
-            	technologyExperieneWithValues.setExperienceDurationType(technologyExperience.getExperienceDurationType());
-            	technologyExperieneWithValues.setExperienceDurationValue(technologyExperience.getExperienceDurationValue());
-            	technologyExperieneWithValuesList.add(technologyExperieneWithValues);
+            if (technology != null && candidate != null) {
+            	ExperienceDTO technologyExperienceDTO = new ExperienceDTO();
+            	technologyExperienceDTO.setId(technologyExperience.getId());
+            	technologyExperienceDTO.setName(technology.getName());
+            	technologyExperienceDTO.setCandidateId(candidate.getId());
+            	technologyExperienceDTO.setExperienceDurationType(technologyExperience.getExperienceDurationType());
+            	technologyExperienceDTO.setExperienceDurationValue(technologyExperience.getExperienceDurationValue());
+            	technologyExperienceDTOList.add(technologyExperienceDTO);
             }
  
         }
 
-        return technologyExperieneWithValuesList;
+        return technologyExperienceDTOList;
+    }
+	
+	public List<ExperienceDTO> getTechnologyExperienceAllValuesById(int candidateId) {
+        List<TechnologyExperience> technologyExperienceList = technologyExperienceRepository.findByCandidateId(candidateId);
+        List<ExperienceDTO> technologyExperienceDTOList = new ArrayList<>();
+
+        for (TechnologyExperience technologyExperience : technologyExperienceList) {
+        	
+            Technology technology = technologyRepository.findById((Integer) technologyExperience.getTechnologyId()).orElse(null);
+            Candidate candidate = candidateRepository.findById((Integer) technologyExperience.getCandidateId()).orElse(null);
+
+            if (technology != null) {
+            	ExperienceDTO technologyExperienceDTO = new ExperienceDTO();
+            	technologyExperienceDTO.setId(technologyExperience.getId());
+            	technologyExperienceDTO.setName(technology.getName());
+            	technologyExperienceDTO.setCandidateId(candidate.getId());
+            	technologyExperienceDTO.setExperienceDurationType(technologyExperience.getExperienceDurationType());
+            	technologyExperienceDTO.setExperienceDurationValue(technologyExperience.getExperienceDurationValue());
+            	technologyExperienceDTOList.add(technologyExperienceDTO);
+            }
+ 
+        }
+
+        return technologyExperienceDTOList;
     }
 }

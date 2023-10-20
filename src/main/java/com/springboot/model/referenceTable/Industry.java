@@ -3,6 +3,9 @@ package com.springboot.model.referenceTable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.Pattern;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +23,8 @@ public class Industry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+	@Pattern(regexp = "[a-zA-Z0-9_.-]{1,50}", message = "Invalid characters in name")
+	@Column(name = "name", unique= true, nullable = false)
     private String name;
     
 	public Integer getId() {

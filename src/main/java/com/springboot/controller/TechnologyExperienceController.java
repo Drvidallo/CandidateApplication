@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.dao.TechnologyExperienceService;
 import com.springboot.model.TechnologyExperience;
-import com.springboot.model.DTO.TechnologyExperienceDTO;
+import com.springboot.model.DTO.ExperienceDTO;
 
 @RestController
 @RequestMapping("/api/technologyExperience")
@@ -30,7 +30,7 @@ public class TechnologyExperienceController {
 	}
 	
 	@GetMapping(path="/get")
-	public List<TechnologyExperienceDTO> getTechnologyExperienceAll() {
+	public List<ExperienceDTO> getTechnologyExperienceAll() {
 		return technologyExperienceService.getTechnologyExperienceAllValues();
 	}
 }

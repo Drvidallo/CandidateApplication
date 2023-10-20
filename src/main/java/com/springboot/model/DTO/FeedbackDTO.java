@@ -58,6 +58,10 @@ public class FeedbackDTO {
 	@Column(name = "additional_notes")
 	private String additionalNotes;
 
+	private Integer candidateId;
+	
+	private String otherQualifiedRole;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -76,8 +80,6 @@ public class FeedbackDTO {
 	public void setPracticeExamResult(PracticeExamResultEnum practiceExamResult) {
 		this.practiceExamResult = practiceExamResult;
 	}
-	
-	
 	
 	public RecommendationEnum getRecommendation() {
 		return recommendation;
@@ -195,5 +197,16 @@ public class FeedbackDTO {
 		this.additionalNotes = additionalNotes;
 	}
 
-
+	public Integer getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Integer candidateId) {
+		this.candidateId = candidateId;
+	}
+	public String getOtherQualifiedRole() {
+		return otherQualifiedRole;
+	}
+	public void setOtherQualifiedRole(String otherQualifiedRole) {
+		this.otherQualifiedRole = otherQualifiedRole;
+	}
 }

@@ -8,6 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "technologyExperience")
@@ -16,18 +18,21 @@ public class TechnologyExperience {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+	@NotNull
+	@NotBlank
+	@Column(name = "candidate_id", nullable=false)
+    private Integer candidateId;
 
-    @JoinColumn(name = "interviewee_id")
-    private Integer intervieweeId;
-
-
-    @JoinColumn(name = "technology_id")
+	@NotNull
+	@NotBlank
+	@Column(name = "technology_id")
     private Integer technologyId;
 	
+
 	@Column(length = 20, name="experience_duration_value")
 	private Integer experienceDurationValue;
 	
-	
+
 	@Column(length = 20, name="experience_duration_type")
 	private ExperienceDurationTypeEnum experienceDurationType;
 
@@ -41,16 +46,13 @@ public class TechnologyExperience {
 		this.id = id;
 	}
 
-
-
-
-	public Integer getIntervieweeId() {
-		return intervieweeId;
+	public Integer getCandidateId() {
+		return candidateId;
 	}
 
 
-	public void setIntervieweeId(Integer intervieweeId) {
-		this.intervieweeId = intervieweeId;
+	public void setCandidateId(Integer candidateId) {
+		this.candidateId = candidateId;
 	}
 
 

@@ -1,7 +1,7 @@
 package com.springboot.controller;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.dao.FeedbackService;
 import com.springboot.model.Feedback;
 import com.springboot.model.DTO.FeedbackDTO;
+import com.springboot.repository.FeedbackRepository;
 
 
 @RestController
@@ -21,7 +22,10 @@ import com.springboot.model.DTO.FeedbackDTO;
 public class FeedbackController {
 	
 	private final FeedbackService feedbackService;
-
+	
+	@Autowired
+	FeedbackRepository feedbackRepository;
+	
 	@Autowired
 	public FeedbackController(FeedbackService feedbackService) {
 		this.feedbackService = feedbackService;
@@ -32,8 +36,13 @@ public class FeedbackController {
 		feedbackService.submitFeedback(feedback);
 	}
 	
-	@GetMapping(path="get/{feedbackId}")
-	public List<FeedbackDTO> getFeedbackAllValues(@PathVariable("feedbackId") int id) {
+	@GetMapping(path="get")
+	public List<FeedbackDTO> getFeedbackAllValues() {
 		return feedbackService.getFeedbackAllValues();
+	}
+	
+	@GetMapping(path="get/{feedbackId}")
+	public FeedbackDTO getFeedbackByCandidateId(@PathVariable("feedbackId") int id) {
+		return feedbackService.getFeedbackByCandidateId(id);
 	}
 }

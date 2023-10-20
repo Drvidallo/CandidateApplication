@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "feedback")
@@ -17,9 +19,10 @@ public class Feedback {
 	@Id
     private Integer id;
 
-
-    @JoinColumn(name = "intervieweeId")
-    private Integer intervieweeId;
+	@NotNull
+	@NotBlank
+	@Column(name = "candidateId")
+    private Integer candidateId;
 	
 	
 	@Column(name = "educational_Background_feedback")
@@ -129,17 +132,13 @@ public class Feedback {
 		this.id = id;
 	}
 
-
-
-
-
-	public Integer getIntervieweeId() {
-		return intervieweeId;
+	public Integer getCandidateId() {
+		return candidateId;
 	}
 
 
-	public void setIntervieweeId(Integer intervieweeId) {
-		this.intervieweeId = intervieweeId;
+	public void setCandidateId(Integer candidateId) {
+		this.candidateId = candidateId;
 	}
 
 

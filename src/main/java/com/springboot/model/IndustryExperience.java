@@ -8,8 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
-
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import com.springboot.model.enums.ExperienceDurationTypeEnum;
 
@@ -22,12 +22,14 @@ public class IndustryExperience {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; 
 
+	@NotNull
+	@NotBlank
+	@Column(name = "candidate_id", nullable=false)
+    private Integer candidateId;
 
-    @JoinColumn(name = "interviewee_id")
-    private Integer intervieweeId;
-
-
-    @JoinColumn(name = "industry_id")
+	@NotNull
+	@NotBlank
+	@Column(name = "industry_id", nullable=false)
     private Integer industryId;
     
 	@Column(length = 20, name="experience_duration_value")
@@ -45,14 +47,12 @@ public class IndustryExperience {
 		this.id = id;
 	}
 
-
-
-	public Integer getIntervieweeId() {
-		return intervieweeId;
+	public Integer getCandidateId() {
+		return candidateId;
 	}
 
-	public void setIntervieweeId(Integer intervieweeId) {
-		this.intervieweeId = intervieweeId;
+	public void setCandidateId(Integer candidateId) {
+		this.candidateId = candidateId;
 	}
 
 	public Integer getIndustryId() {
@@ -79,6 +79,16 @@ public class IndustryExperience {
 		this.experienceDurationType = experienceDurationType;
 	}
 
+	public IndustryExperience(Integer id, Integer industryId, Integer experienceDurationValue,
+			ExperienceDurationTypeEnum experienceDurationType) {
+		super();
+		this.id = id;
+		this.industryId = industryId;
+		this.experienceDurationValue = experienceDurationValue;
+		this.experienceDurationType = experienceDurationType;
+	}
+
+	public IndustryExperience() {}
 	
 	
 }

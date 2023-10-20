@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.springboot.model.IndustryExperience;
-import com.springboot.model.Interviewee;
-import com.springboot.model.DTO.IndustryExperienceDTO;
+import com.springboot.model.Candidate;
+import com.springboot.model.DTO.ExperienceDTO;
 import com.springboot.model.referenceTable.Industry;
 import com.springboot.repository.IndustryExperienceRepository;
 import com.springboot.repository.IndustryRepository;
-import com.springboot.repository.IntervieweeRepository;
+import com.springboot.repository.CandidateRepository;
 
 
 @Service
@@ -23,7 +23,7 @@ public class IndustryExperienceService {
 	IndustryRepository industryRepository;
 	
 	@Autowired
-	IntervieweeRepository intervieweeRepository;
+	CandidateRepository candidateRepository;
 	
 	public Iterable<IndustryExperience> getAllIndustryExperience() {
 		return industryExperienceRepository.findAll(); 
@@ -34,28 +34,49 @@ public class IndustryExperienceService {
 		industryExperienceRepository.save(industryExperience);
 	}
 	
-	public List<IndustryExperienceDTO> getIndustryExperienceAllValues() {
+	public List<ExperienceDTO> getIndustryExperienceAllValues() {
         List<IndustryExperience> industryExperienceList = industryExperienceRepository.findAll();
-        List<IndustryExperienceDTO> industryExperieneWithValuesList = new ArrayList<>();
+        List<ExperienceDTO> industryExperienceDTOList = new ArrayList<>();
 
         for (IndustryExperience industryExperience : industryExperienceList) {
         	
             Industry industry = industryRepository.findById((Integer) industryExperience.getIndustryId()).orElse(null);
-            Interviewee interviewee = intervieweeRepository.findById((Integer) industryExperience.getIntervieweeId()).orElse(null);
+            Candidate candidate = candidateRepository.findById((Integer) industryExperience.getCandidateId()).orElse(null);
 
             if (industry != null) {
-            	IndustryExperienceDTO industryExperieneWithValues = new IndustryExperienceDTO();
+            	ExperienceDTO industryExperienceDTO = new ExperienceDTO();
+            	industryExperienceDTO.setId(industryExperience.getId());
+            	industryExperienceDTO.setName(industry.getName());
+            	industryExperienceDTO.setCandidateId(candidate.getId());
+            	industryExperienceDTO.setExperienceDurationType(industryExperience.getExperienceDurationType());
+            	industryExperienceDTO.setExperienceDurationValue(industryExperience.getExperienceDurationValue());
+            	industryExperienceDTOList.add(industryExperienceDTO);
+            }
+
+        }
+
+        return industryExperienceDTOList;
+    }
+	
+	public List<ExperienceDTO> getIndustryExperienceAllValuesById(int candidateId) {
+        List<IndustryExperience> industryExperienceList = industryExperienceRepository.findByCandidateId(candidateId);
+        List<ExperienceDTO> industryExperieneWithValuesList = new ArrayList<>();
+
+        for (IndustryExperience industryExperience : industryExperienceList) {
+        	
+            Industry industry = industryRepository.findById((Integer) industryExperience.getIndustryId()).orElse(null);
+            Candidate candidate = candidateRepository.findById((Integer) industryExperience.getCandidateId()).orElse(null);
+
+            if (industry != null) {
+            	ExperienceDTO industryExperieneWithValues = new ExperienceDTO();
             	industryExperieneWithValues.setId(industryExperience.getId());
-            	industryExperieneWithValues.setIndustry(industry.getName());
-            	industryExperieneWithValues.setIntervieweeFirstName(interviewee.getFirstName());
-            	industryExperieneWithValues.setIntervieweeLastName(interviewee.getLastName());
+            	industryExperieneWithValues.setName(industry.getName());
+            	industryExperieneWithValues.setCandidateId(candidate.getId());
             	industryExperieneWithValues.setExperienceDurationType(industryExperience.getExperienceDurationType());
             	industryExperieneWithValues.setExperienceDurationValue(industryExperience.getExperienceDurationValue());
             	industryExperieneWithValuesList.add(industryExperieneWithValues);
             }
-        
-            
-            
+
         }
 
         return industryExperieneWithValuesList;
