@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.springboot.dao.IndustryExperienceService;
 import com.springboot.model.IndustryExperience;
 import com.springboot.model.DTO.ExperienceDTO;
-
 
 @RestController
 @RequestMapping("/api/industryExperience")
@@ -25,19 +23,19 @@ public class IndustryExperienceController {
 	public IndustryExperienceController(IndustryExperienceService industryExperienceService) {
 		this.industryExperienceService = industryExperienceService;
 	}
-	
+
 	@PostMapping("/post")
 	public void addIndustryExperience(@RequestBody IndustryExperience industryExperience) {
 		industryExperienceService.submitIndustryExperience(industryExperience);
 	}
-	
-	@GetMapping(path="/get")
+
+	@GetMapping(path = "/get")
 	public List<ExperienceDTO> getIndustryExperienceAll() {
 		return industryExperienceService.getIndustryExperienceAllValues();
 	}
-	
-	@GetMapping(path="/get/{intervieweeId}")
-	public List<ExperienceDTO> getIndustryExperienceById(@PathVariable("intervieweeId") int id) {
+
+	@GetMapping(path = "/get/{candidateId}")
+	public List<ExperienceDTO> getIndustryExperienceById(@PathVariable("candidateId") int id) {
 		return industryExperienceService.getIndustryExperienceAllValuesById(id);
 	}
 }

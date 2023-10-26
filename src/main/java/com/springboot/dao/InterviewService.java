@@ -6,16 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.springboot.utils.Utils;
 import com.springboot.model.Candidate;
-import com.springboot.model.DTO.ExperienceDTO;
-import com.springboot.model.DTO.InterviewDTO;
-import com.springboot.model.DTO.CandidateDTO;
-import com.springboot.model.referenceTable.Industry;
-import com.springboot.model.IndustryExperience;
 import com.springboot.model.Interview;
+import com.springboot.model.DTO.InterviewDTO;
 import com.springboot.repository.CandidateRepository;
 import com.springboot.repository.InterviewRepository;
+import com.springboot.utils.Utils;
 
 import jakarta.transaction.Transactional;
 
@@ -23,59 +19,58 @@ import jakarta.transaction.Transactional;
 public class InterviewService {
 	@Autowired
 	InterviewRepository interviewRepository;
-	
+
 	@Autowired
-	CandidateRepository intervieweeRepository;
-	
+	CandidateRepository candidateRepository;
+
 	Utils intervieweeUtils = new Utils();
-	
+
 	public Iterable<Interview> getAllInterviewer() {
-		return interviewRepository.findAll(); 
+		return interviewRepository.findAll();
 	}
-	
+
 	public InterviewService(InterviewRepository interviewRepository) {
-		
-        this.interviewRepository = interviewRepository;
-    }
-	
+
+		this.interviewRepository = interviewRepository;
+	}
+
 	@Transactional
 	public void submitInterview(Interview interview) {
-			interviewRepository.save(interview);
+		interviewRepository.save(interview);
 	}
-	
+
 	public List<InterviewDTO> getInterviewAllValues() {
-        List<Interview> interviewList = interviewRepository.findAll();
-        List<InterviewDTO> interviewWithValuesList = new ArrayList<>();
+		List<Interview> interviewList = interviewRepository.findAll();
+		List<InterviewDTO> interviewWithValuesList = new ArrayList<>();
 
-        for (Interview interview : interviewList) {
-        	
-            Candidate candidate = intervieweeRepository.findById((Integer) interview.getCandidateId()).orElse(null);
+		for (Interview interview : interviewList) {
 
-            if (candidate != null) {
-            	InterviewDTO interviewWithValues = new InterviewDTO();
-            	interviewWithValues.setId(interview.getId());
-            	interviewWithValues.setIntervieweeId(candidate.getId());
-            	interviewWithValues.setInterviewDate(interview.getInterviewDate());
-            	interviewWithValuesList.add(interviewWithValues);
-            }
+			Candidate candidate = candidateRepository.findById((Integer) interview.getCandidateId()).orElse(null);
 
-        }
+			if (candidate != null) {
+				InterviewDTO interviewWithValues = new InterviewDTO();
+				interviewWithValues.setId(interview.getId());
+				interviewWithValues.setCandidateId(candidate.getId());
+				interviewWithValues.setInterviewDate(interview.getInterviewDate());
+				interviewWithValuesList.add(interviewWithValues);
+			}
 
-        return interviewWithValuesList;
-    }
-	
+		}
+
+		return interviewWithValuesList;
+	}
+
 	public InterviewDTO getInterviewByCandidateId(int intervieweeId) {
-        Interview interview = interviewRepository.findByCandidateId(intervieweeId);
-        InterviewDTO interviewWithValues = new InterviewDTO();
+		Interview interview = interviewRepository.findByCandidateId(intervieweeId);
+		InterviewDTO interviewDTO = new InterviewDTO();
+		Candidate candidate = candidateRepository.findById((Integer) interview.getCandidateId()).orElse(null);
 
-            Candidate candidate = intervieweeRepository.findById((Integer) interview.getCandidateId()).orElse(null);
+		if (candidate != null) {
 
-            if (candidate != null) {
-            	
-            	interviewWithValues.setId(interview.getId());
-            	interviewWithValues.setIntervieweeId(candidate.getId());
-            	interviewWithValues.setInterviewDate(interview.getInterviewDate());
-            }
-        return interviewWithValues;
-    }
+			interviewDTO.setId(interview.getId());
+			interviewDTO.setCandidateId(candidate.getId());
+			interviewDTO.setInterviewDate(interview.getInterviewDate());
+		}
+		return interviewDTO;
+	}
 }

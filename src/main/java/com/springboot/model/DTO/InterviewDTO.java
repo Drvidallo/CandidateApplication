@@ -9,12 +9,11 @@ public class InterviewDTO {
 	
 	private Integer id;
 
-  
     private String interviewer;
     
 	private Date interviewDate;
 	
-    private Integer intervieweeId;
+    private Integer candidateId;
 
 	public Integer getId() {
 		return id;
@@ -40,13 +39,12 @@ public class InterviewDTO {
 		this.interviewDate = interviewDate;
 	}
 
-	public Integer getIntervieweeId() {
-		return intervieweeId;
+	public Integer getCandidateId() {
+		return candidateId;
 	}
 
-	public void setIntervieweeId(Integer intervieweeId) {
-		this.intervieweeId = intervieweeId;
+	public void setCandidateId(Integer candidateId) {
+		this.candidateId = candidateId;
 	}
-	
-	
+
 }

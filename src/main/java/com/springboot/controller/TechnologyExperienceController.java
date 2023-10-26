@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import com.springboot.dao.TechnologyExperienceService;
 import com.springboot.model.TechnologyExperience;
@@ -23,14 +23,19 @@ public class TechnologyExperienceController {
 	public TechnologyExperienceController(TechnologyExperienceService technologyExperienceService) {
 		this.technologyExperienceService = technologyExperienceService;
 	}
-	
+
 	@PostMapping("/post")
 	public void addTechnologyExperience(@RequestBody TechnologyExperience technologyExperience) {
 		technologyExperienceService.submitTechnologyExperience(technologyExperience);
 	}
-	
-	@GetMapping(path="/get")
+
+	@GetMapping(path = "/get")
 	public List<ExperienceDTO> getTechnologyExperienceAll() {
 		return technologyExperienceService.getTechnologyExperienceAllValues();
+	}
+
+	@GetMapping(path = "/get/{candidateId}")
+	public List<ExperienceDTO> getTechnologyExperienceById(@PathVariable("candidateId") int id) {
+		return technologyExperienceService.getTechnologyExperienceAllValuesById(id);
 	}
 }
